@@ -1,0 +1,69 @@
+{
+  "playbook": {
+    "playbook": {
+      "displayName": "Default Generative Playbook",
+      "goal": "Help users by answering their questions using the most relevant information from a set of FAQs",
+      "steps": [ {
+        "text": "You are an expert FAQ assistant."
+      }, {
+        "text": "When user asked question about the Aurora Bay, access the"
+      }, {
+        "text": "If none of the answers are relevant, respond with 'I can't help with this."
+      } ],
+      "tools": [ "37678126-0ae9-4d1c-8975-ee7ad37ed3fc" ],
+      "etag": "684ff7b1",
+      "playbookId": "00000000-0000-0000-0000-000000000000",
+      "tokenCount": 61,
+      "playbookType": "WORKFLOW",
+      "codeBlock": {
+      
+      }
+    },
+    "tools": [ {
+      "id": "37678126-0ae9-4d1c-8975-ee7ad37ed3fc",
+      "displayName": "aurora-bay-faq",
+      "description": "CSV Data of the Aurora Bay FAQs",
+      "etag": "684ff799",
+      "dataStoreTool": {
+        "dataStoreConnections": [ {
+          "dataStoreType": "UNSTRUCTURED",
+          "dataStore": "projects/479971105418/locations/global/collections/default_collection/dataStores/aurora-bay-faq_1750069597161",
+          "documentProcessingMode": "DOCUMENTS",
+          "engineType": "CHAT_ENGINE",
+          "connectorConfig": {
+          
+          },
+          "createTime": {
+            "seconds": 1750069634,
+            "nanos": 734728000
+          },
+          "displayName": "aurora-bay-faq",
+          "dialogflowAddTime": {
+            "seconds": 1750071192,
+            "nanos": 317000000
+          }
+        } ],
+        "models": {
+          "summarizationModel": {
+          
+          },
+          "rewriterModel": {
+          
+          }
+        },
+        "fallbackPrompt": {
+          "company": "Aurora Bay"
+        },
+        "groundingSettings": {
+        
+        },
+        "payloadSettings": {
+        
+        },
+        "voiceModeSettings": {
+        
+        }
+      }
+    } ]
+  }
+}
