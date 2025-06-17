@@ -19,6 +19,10 @@ ADS is exploring an online agent or chatbot to offload routine inquiries, addres
 - Service reliability
 - Data privacy
 
+## Architecture Diagram
+![genai-assesment drawio](https://github.com/user-attachments/assets/aa927b6f-8721-4dec-a28d-0837109264dc)
+
+
 ## System Components
 
 ### 1. Frontend Web Interface
