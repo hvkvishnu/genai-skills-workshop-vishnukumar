@@ -5,6 +5,7 @@ This challenge implements a comprehensive chatbot system for the Alaska Departme
 ## System Components
 
 ### 1. Frontend Web Interface
+<img width="1512" alt="ads-chatbox" src="https://github.com/user-attachments/assets/c1cdfb89-a6f3-4725-b1be-4891080e3d6f" />
 
 - **URL**: [https://storage.googleapis.com/vishnu-ads-chatbot/index.html](https://storage.googleapis.com/vishnu-ads-chatbot/index.html)
 - A modern web interface that allows users to interact with the chatbot
