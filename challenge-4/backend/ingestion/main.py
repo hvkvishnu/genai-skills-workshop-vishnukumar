@@ -10,7 +10,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
 
 # Configuration
 PROJECT_ID = os.environ.get('PROJECT_ID', 'qwiklabs-gcp-00-171b5867e51b')
@@ -37,23 +36,6 @@ def create_dataset():
         return True
     except Exception as e:
         logger.error(f"Error creating dataset: {str(e)}")
-        return False
-
-def create_connection():
-    """Create BigQuery ML connection for Vertex AI"""
-    try:
-        # Note: Connection creation typically requires additional permissions
-        # This is usually done via gcloud CLI or console
-        query = f"""
-        CREATE CONNECTION IF NOT EXISTS `{CONNECTION_NAME}`
-        TYPE CLOUD_RESOURCE 
-        LOCATION us
-        """
-        # This might not work directly - connections often need to be created via gcloud
-        logger.info("Connection should be created via gcloud CLI or Google Cloud Console")
-        return True
-    except Exception as e:
-        logger.error(f"Error with connection setup: {str(e)}")
         return False
 
 def create_embedding_model():
@@ -138,9 +120,8 @@ def create_embeddings():
         logger.error(f"Error creating embeddings: {str(e)}")
         return False
 
-@app.route('/load-ads-data', methods=['POST'])
 @functions_framework.http
-def load_ads_data():
+def load_ads_data(request):
     """Setup & load complete ADS data"""
     results = {}
     
@@ -156,19 +137,16 @@ def load_ads_data():
         # Step 1: Create Dataset
         results['dataset'] = create_dataset()
         
-        # Step 2: Create Connection (informational)
-        results['connection'] = create_connection()
-        
-        # Step 3: Create Embedding Model
+        # Step 2: Create Embedding Model
         results['embedding_model'] = create_embedding_model()
         
-        # Step 4: Create ADS Table
+        # Step 3: Create ADS Table
         results['ads_table'] = create_ads_table()
         
-        # Step 5: Load Sample Data
+        # Step 4: Load Sample Data
         results['sample_data'] = load_faq_data(csv_uri)
         
-        # Step 6: Create Embeddings
+        # Step 5: Create Embeddings
         results['embeddings'] = create_embeddings()
         
         success_count = sum(results.values())
