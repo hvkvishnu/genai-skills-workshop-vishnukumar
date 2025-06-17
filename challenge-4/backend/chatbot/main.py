@@ -17,6 +17,10 @@ CONNECTION_NAME = 'us.ads-connection'
 EMBEDDING_MODEL_NAME = f'{DATASET_NAME}.Embeddings'
 TABLE_NAME = f'{DATASET_NAME}.ads_faq'
 EMBEDDINGS_TABLE_NAME = f'{DATASET_NAME}.ads_faq_embeddings'
+HEADERS = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    }
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -113,8 +117,8 @@ def validate_user_prompt(user_prompt):
         result = generate(system_prompt, user_prompt)
         parsed = parse_genai_json_response(result)
 
-        logger.info(f"Validated User Prompt Result: {parsed.valid}, Reason: {parsed.reason}")
-        return parsed.valid
+        logger.info(f"Validated User Prompt Result: {parsed['valid']}, Reason: {parsed['reason']}")
+        return parsed['valid']
     except Exception as e:
         logger.error(f"Error on validating user prompt", e)
         return False, str(e)
@@ -143,8 +147,8 @@ def validate_llm_response(llm_response):
         """
     result = generate(system_prompt, llm_response)
     parsed = parse_genai_json_response(result)
-    logger.info(f"Validated LLM Response Result: {parsed.valid}, Reason: {parsed.reason}")
-    return parsed.valid
+    logger.info(f"Validated LLM Response Result: {parsed['valid']}, Reason: {parsed['reason']}")
+    return parsed['valid']
    except Exception as e:
         logger.error(f"Error on validating llm response", e)
         return False, str(e)
@@ -154,7 +158,9 @@ def parse_genai_json_response(response_text):
     cleaned = re.sub(r"```(?:json)?\s*([\s\S]*?)\s*```", r"\1", response_text.strip())
     
     try:
-        return json.loads(cleaned)
+        parsed = json.loads(cleaned)
+        logger.info(f"parsed data", parsed)
+        return parsed
     except json.JSONDecodeError as e:
         raise ValueError(f"Failed to parse JSON from LLM response:\n{cleaned}\n\nError: {str(e)}")
 
@@ -163,12 +169,23 @@ def generate_default_response(answer = "I can't help with this."):
    return jsonify({
             "status": "ok",
             "answer": answer
-        }), 200
+        }), 200, HEADERS
 
 #FAQ ChatBot
 @functions_framework.http
 def faq_chatbot(request):
   try:
+    if request.method == 'OPTIONS':
+        # Allows POST requests from any origin with the Content-Type header
+        # and caches preflight response for 3600s
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600',
+        }
+        return ('', 204, headers)
+
     request_data = request.get_json()
     user_query = request_data['query']
 
@@ -182,7 +199,16 @@ def faq_chatbot(request):
         # when no matching result found in DB
         return generate_default_response()
     else:
-        system_prompt = """You are an expert FAQ assistant. Based on the following FAQs, provide the most relevant and human-like answer to the user's question. If none of the answers are relevant, respond with 'I can't help with this.'\n\n"""
+        system_prompt = """You are an expert FAQ assistant and a friendly conversational agent. 
+
+        Your job is to:
+        1. Understand the user's intent.
+        2. If the query is casual like "Hi", "Hello", or "Thanks", respond politely and naturally.
+        3. If the query is related to FAQs, use the provided questions and answers to help the user.
+        4. If you cannot find a relevant answer, politely say: "I'm not sure about that. Please try rephrasing your question."
+
+        FAQs:
+        """
         for idx, row in df.iterrows():
             system_prompt += f"FAQ {idx+1}:\nQ: {row['question']}\nA: {row['answer']}\n\n"
 
@@ -199,5 +225,5 @@ def faq_chatbot(request):
         return jsonify({
             "status": "failed",
             "error": str(e)
-        }), 500
+        }), 500, HEADERS
 
