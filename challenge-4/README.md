@@ -1,41 +1,59 @@
-# Challenge 4: Alaska Department of Snow Chatbot Implementation
+# Challenge 4: Alaska Department of Snow (ADS) FAQ Chatbot
 
-This challenge implements a comprehensive chatbot system for the Alaska Department of Snow with three main components: a frontend web interface, a chatbot service, and a data ingestion service. The system is designed to provide intelligent responses to queries about snow conditions, road status, and other winter-related information in Alaska.
+This challenge implements a comprehensive FAQ chatbot system for the Alaska Department of Snow (ADS) with three main components: a frontend web interface, a chatbot service, and a data ingestion service. The system is designed to handle routine inquiries about snow-related services, helping to reduce call volume during peak periods.
+
+## Use Case
+
+The Alaska Department of Snow (ADS) serves 750,000 people across 650,000 square miles and relies on interagency communication to deliver services. During snow forecasts, regional offices face high call volumes with questions about:
+
+- Snow plowing schedules
+- School closures
+- Road conditions
+- Service disruptions
+- Emergency services
+
+ADS is exploring an online agent or chatbot to offload routine inquiries, addressing concerns about:
+
+- Cloud service security
+- Cost efficiency
+- Service reliability
+- Data privacy
 
 ## System Components
 
 ### 1. Frontend Web Interface
+
 <img width="1512" alt="ads-chatbox" src="https://github.com/user-attachments/assets/c1cdfb89-a6f3-4725-b1be-4891080e3d6f" />
 
 - **URL**: [https://storage.googleapis.com/vishnu-ads-chatbot/index.html](https://storage.googleapis.com/vishnu-ads-chatbot/index.html)
 - A modern web interface that allows users to interact with the chatbot
 - Built with React and styled with modern CSS frameworks
-- Provides a user-friendly chat interface for querying snow-related information
-- Features real-time updates on snow conditions and road status
+- Provides a user-friendly chat interface for querying ADS services
+- Features real-time updates on service status and disruptions
 
 ### 2. Chatbot Service
 
 - **URL**: [https://ads-chat-bot-479971105418.europe-west1.run.app](https://ads-chat-bot-479971105418.europe-west1.run.app)
-- Handles user queries about snow conditions and winter services
+- Handles routine inquiries about ADS services
 - Implemented using Python and deployed on Google Cloud Run
 - Processes natural language queries about:
-  - Current snow conditions
-  - Road status and closures
-  - Weather forecasts
-  - Winter safety information
+  - Snow plowing schedules
+  - School closure information
+  - Road conditions and closures
+  - Service disruptions
   - Emergency services
-- Integrates with a vector database for efficient information retrieval
+- Integrates with a vector database for efficient FAQ retrieval
 
 ### 3. Data Ingestion Service
 
 - **URL**: [https://ads-data-ingestion-479971105418.europe-west1.run.app](https://ads-data-ingestion-479971105418.europe-west1.run.app)
-- Manages the ingestion and processing of snow-related data
+- Manages the ingestion and processing of ADS service data
 - Processes and stores information about:
-  - Snow depth measurements
+  - Service schedules
   - Road conditions
-  - Weather forecasts
+  - School closure announcements
   - Emergency alerts
-  - Historical snow data
+  - Historical service data
 - Creates embeddings for efficient semantic search
 - Ensures data is properly indexed for the chatbot service
 
@@ -54,12 +72,13 @@ challenge-4/
 
 The project includes comprehensive evaluation notebooks that assess:
 
-- Response accuracy for snow-related queries
-- Response relevance to winter conditions
+- Response accuracy for routine inquiries
+- Response relevance to service queries
 - Response time for emergency information
 - System performance metrics
 - User interaction patterns
-- Accuracy of snow condition reporting
+- Cost efficiency metrics
+- Cloud service reliability
 
 The evaluation notebooks can be found in the `backend/evaluation` directory.
 
@@ -77,12 +96,12 @@ The evaluation notebooks can be found in the `backend/evaluation` directory.
 - React
 - Vector database (e.g., Pinecone, Weaviate)
 - Cloud infrastructure (Google Cloud Run)
-- Weather API integration
-- Snow condition monitoring systems
+- Interagency communication APIs
+- Service status monitoring systems
 
 ## Deployment
 
-The services are deployed on Google Cloud Run in the europe-west1 region. Each service is containerized and can be scaled independently based on demand, with special consideration for handling increased traffic during severe weather conditions.
+The services are deployed on Google Cloud Run in the europe-west1 region. Each service is containerized and can be scaled independently based on demand, with special consideration for handling increased traffic during peak service periods.
 
 ## Contributing
 
